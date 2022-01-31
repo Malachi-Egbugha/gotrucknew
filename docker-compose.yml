@@ -1,0 +1,46 @@
+version: '3.4'
+
+services:
+  #Mongodb services
+  mongo_db:
+    container_name: gotruckmongo
+    image: mongo:latest
+    restart: always
+    ports: ["2717:27017"]
+    volumes: 
+      - mongo_db:/data/db
+      #product services
+  driverservice:
+    container_name: diverservice
+    restart: always
+    build: ./registerdriver
+    ports:
+      - 5050:5050
+    volumes: ["./driverservice:/usr/src/app"]
+    depends_on:
+      - mongo_db
+  #order services
+  truckservice:
+    container_name: truckservice
+    restart: always
+    build: ./truckservice
+    ports:
+      - 6001:6001
+    volumes: ["./truckservice:/usr/src/app"]
+    depends_on:
+      - mongo_db
+  #admin services
+  adminservice:
+    container_name: adminservice
+    restart: always
+    build: ./admin
+    ports:
+      - 4005:4005
+    volumes: ["./adminservice:/usr/src/app"]
+    depends_on:
+      - driverservice
+      - truckservice
+
+volumes:
+  mongo_db:
+  

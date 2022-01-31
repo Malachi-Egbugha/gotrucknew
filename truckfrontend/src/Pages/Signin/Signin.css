@@ -1,0 +1,88 @@
+body {
+    font-family: "Alegreya Sans", sans-serif;
+    box-sizing: border-box;
+    background-color: #4DB151;
+   
+  }
+  .text-primary-p {
+    color: #000000;
+    font-size: 0.8rem;
+    font-family: "Catamaran", sans-serif;
+  }
+  .text-main-p {
+    color: #4DB151;
+    font-size: 1.5rem;
+    font-family: "Catamaran", sans-serif;
+  }
+  
+  .loginbanner {
+    min-height: 100vh;
+    width: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    
+ 
+  
+  }
+  
+  
+  .card {
+    background: rgb(255, 255, 255, 1)!important;
+    text-align: left !important;
+    padding: 0.5rem !important;
+  }
+  .card-header {
+    text-align: center;
+    background-color: #fff;
+    
+  }
+  
+  /* Style the input container */
+  .input-container {
+    display: flex;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  /* Style the form icons */
+  .icon {
+    padding: 0.5rem;
+    background: #4DB151;
+    color: white;
+    min-width: 50px;
+    text-align: center;
+  }
+  
+  /* Style the input fields */
+  .input-field {
+    width: 100%;
+    padding: 0.1rem;
+    outline: none;
+    font-size: 1.5rem;
+    color: #808080;
+   
+    
+  }
+  
+  .input-field:focus {
+    border: 2px solid #4DB151;
+  }
+  
+  /* Set a style for the submit button */
+  .btn {
+    background-color: #4DB151;
+    color: white;
+    padding: 15px 20px;
+    border: none;
+    cursor: pointer;
+    opacity: 0.9;
+    border-radius: 30px;
+  }
+  
+  .btn:hover {
+    opacity: 1;
+  }
+  

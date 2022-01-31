@@ -1,0 +1,58 @@
+html, body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+. {
+    user-select: none;
+    outline: none;
+}
+
+button{
+    background: transparent;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    border: 1px solid white;
+    border-radius: 50px;
+    box-shadow: 2px 3px 5px rgba(0, 0, 0, .75);
+    padding: 10px 100px;
+    cursor: pointer;
+    transition: all .25s ease-in;
+}
+
+button:hover{
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 3px 5px 15px rgba(0, 0, 0, .75);
+}
+
+input {
+    transform: scale(1.5);
+}
+
+label{
+    font-size: 20px ;
+    font-weight: bold;
+    color: white;
+    margin-right: 10px;
+    text-transform: uppercase;
+}
+
+.Home{
+    height: 100vh;
+    width: 100vw;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: linear-gradient(30deg, #212332 0%, #474975 70%);
+}
