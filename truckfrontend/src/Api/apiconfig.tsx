@@ -1,7 +1,9 @@
 import jwt_decode from 'jwt-decode';
 
-export const LOCAL = "http://localhost:5050";
-export const TRUCK = "http://localhost:6001";
+export const LOCAL = "http://147.182.130.110:5050";
+export const TRUCK = "http://147.182.130.110:6001";
+//export const LOCAL = "http://localhost:5050";
+//export const TRUCK = "http://localhost:6001";
 
 //export const LOCAL = "https://driverservices.herokuapp.com";
 //export const TRUCK = "https://truckservices.herokuapp.com";
