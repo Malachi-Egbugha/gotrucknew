@@ -7,11 +7,11 @@ const path = require("path");
 exports.registertruck = async (req,res)=>{
     try{
         //register truck
-        const {platenumber} = req.body;
-        const findTruck = await Truck.findOne({ platenumber });
-        if(findTruck){
-            return res.status(403).json({error: "Truck with  this plate number is already in use", status: false});
-        }
+        
+        const findTruck = await Truck.countDocuments();
+        req.body.trucknumber= findTruck + 1;
+        console.log(req.body);
+       
         
     }catch(err){
       
@@ -46,6 +46,7 @@ exports.registertruck = async (req,res)=>{
         res.status(200).json({truckinfo, status: true});
     
     }catch(err){
+      console.log(err);
         return res.status(500).json({ msg: err, status:false });
     }
 

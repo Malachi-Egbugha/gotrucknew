@@ -14,4 +14,5 @@ const connectDb = async () =>{
 };
 //mongodb://localhost/drivers
 //mongodb+srv://gotruck:m0645032@cluster0.8g5es.mongodb.net/gotruck?retryWrites=true&w=majority
+//mongodb://mongo_db:27017/drivers
 module.exports = connectDb;

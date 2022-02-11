@@ -25,6 +25,33 @@ export const signin = async (user: Props) =>{
 
     });
 }
+//dashboard
+export const dashboard = async () =>{
+  const token = JSON.parse(localStorage.getItem("gotruck") || '{}');
+var data = '';
+var config:any = {
+  method: 'get',
+  url: `${LOCAL}/dashboard`,
+  headers: { 
+   
+    "Content-Type": "multipart/form-data",
+    'authorization': `Bearer: ${token} `, 
+    
+  },
+  data : data
+};
+
+try{
+let dashboard = await axios(config);
+return dashboard.data;
+}
+catch(err){
+  return { error: "Error Please Contact Administrator" };
+
+}
+
+}
+
 //signout
 export const signout = async () =>{
   localStorage.removeItem("gotruck");
@@ -89,21 +116,30 @@ export const getalltrucks = async () => {
   };
 
   export const postnewtruck = async (truckinfo:any,file:any) =>{
-    const token = JSON.parse(localStorage.getItem("gotruck") || '{}');
+const token = JSON.parse(localStorage.getItem("gotruck") || '{}');
 let data = new FormData();
-data.append('platenumber', truckinfo.platenumber);
 data.append('brand', truckinfo.brand);
-data.append('model', truckinfo.model);
-data.append('axle', truckinfo.axle);
+data.append('clutch', truckinfo.clutch);
+data.append('color', truckinfo.color);
+data.append('drivingtype', truckinfo.drivingtype);
 data.append('enginetype', truckinfo.enginetype);
-data.append('power', truckinfo.power);
-data.append('tonnagecapacity', truckinfo.tonnagecapacity);
-data.append('specification', truckinfo.specification);
-data.append('trucknumber', truckinfo.trucknumber);
-data.append('status', truckinfo.status);
-data.append('price',truckinfo.price);
+data.append('frame', truckinfo.frame);
+data.append('fueltank', truckinfo.fueltank);
+data.append('maxspeed', truckinfo.maxspeed);
+data.append('maxtorque', truckinfo.maxtorque);
+data.append('milage', truckinfo.milage);
+data.append('model', truckinfo.model);
+data.append('price', truckinfo.price);
+data.append('rearaxle', truckinfo.rearaxle);
+data.append('steeringtech', truckinfo.steeringtech);
+data.append('tire', truckinfo.tire);
+data.append('tonnage', truckinfo.tonnage);
+data.append('transmissionmodel', truckinfo.transmissionmodel);
+data.append('status', truckinfo.truckstatus);
+data.append('wheelbase', truckinfo.wheelbase);
+data.append('year', truckinfo.year);
+data.append('bodytype', truckinfo.bodytype);
 data.append('file', file);
-
 var config:any = {
   method: 'post',
   url: `${TRUCK}/truck/registertruck`,

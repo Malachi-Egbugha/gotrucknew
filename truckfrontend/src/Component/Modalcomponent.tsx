@@ -3,6 +3,8 @@ import Swal from 'sweetalert2';
 import Modal from "react-modal";
 import {TRUCK,LOCAL} from "../Api/apiconfig";
 import {useQuery,useQueryClient} from 'react-query';
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab'
 
 import {postnewtruck,putupdateusers,driversignup,getavailabletruck} from "../Api/apicall";
 import axios from "axios";
@@ -38,35 +40,55 @@ const Modalcompoment = ({modalIsOpen,setIsOpen,infotype,info}: Props) =>{
     guarantorpassporturl:"",
     passporturl:"",
     trunknumber:"",
-
- 
   });
   const [values, setValues] = useState({
-    platenumber: "",
+    year: "",
     brand: "",
     model: "",
-    axle: "",
+    drivingtype: "",
+    fueltank:"",
+    tire:"",
+    bodytype: "",
+    color: "",
     enginetype: "",
-    power: "",
-    tonnagecapacity: "",
-    specification: "",
-    trucknumber: "",
-    status: "",
-    price:"",
+    tonnage: "",
+    wheelbase: "",
+    maxspeed: "",
+    maxtorque: "",
+    clutch: "",
+    transmissionmodel: "",
+    rearaxle: "",
+    steeringtech: "",
+    milage: "",
+    frame: "",
+    price: "",
+    status:"",
+    truckstatus:"",
  
   });
   const {
-    platenumber,
+    year,
     brand,
     model,
-    axle,
+    drivingtype,
+    fueltank,
+    tire,
+    bodytype,
+    color,
     enginetype,
-    power,
-    tonnagecapacity,
-    specification,
-    trucknumber,
-    status,
+    tonnage,
+    wheelbase,
+    maxspeed,
+    maxtorque,
+    clutch,
+    transmissionmodel,
+    rearaxle,
+    steeringtech,
+    milage,
+    frame,
     price,
+    status,
+    truckstatus,
     
  
 
@@ -92,7 +114,7 @@ const Modalcompoment = ({modalIsOpen,setIsOpen,infotype,info}: Props) =>{
   const {data,isLoading,isError,error} = useQuery('availabletruck', async() => await getavailabletruck(),{refetchInterval: 50000,refetchOnReconnect:false, refetchIntervalInBackground: true, cacheTime: 100000});
   //HANDLEDRIVER CHANGE
   const handleDriverChange =  (name:string) => async (event:React.ChangeEvent<any>) => {
-    console.log(driver);
+   
     event.target.files ? setDriver({ ...driver,[name]: event.target.files[0] }): setDriver({ ...driver,[name]: event.target.value });
     
     
@@ -101,6 +123,7 @@ const Modalcompoment = ({modalIsOpen,setIsOpen,infotype,info}: Props) =>{
    const handleChange =  (name:string) => async (event:React.ChangeEvent<any>) => {
     
     setValues({ ...values,[name]: event.target.value });
+   
     
 
   
@@ -115,15 +138,16 @@ const Modalcompoment = ({modalIsOpen,setIsOpen,infotype,info}: Props) =>{
  
   const customStyles = {
     content: {
-    top: '8%',
-    left: '32%',
-    right: '32%',
+    top: '5%',
+    left: '20%',
+    right: '20%',
     bottom: 'auto',
     boxShadow: '0 0 10px 0 rgba(0,0,97,0.5)',
     overflow: 'auto',
     borderRadius:'4px',
     outline: 'none',
     },
+    innerHeight:"50%",
 
     overlay: {
       backgroundColor: "rgba(0,0,0,0.75)",
@@ -137,17 +161,29 @@ const afterOpenModal = () =>{
 }
 const closeModal = () =>{
   setValues({   
-  platenumber: "",
-  brand: "",
-  model: "",
-  axle: "",
-  enginetype: "",
-  power: "",
-  tonnagecapacity: "",
-  specification: "",
-  trucknumber: "",
-  status: "",
-  price:"",
+
+    year: "",
+    brand: "",
+    model: "",
+    drivingtype: "",
+    fueltank:"",
+    tire:"",
+    bodytype: "",
+    color: "",
+    enginetype: "",
+    tonnage: "",
+    wheelbase: "",
+    maxspeed: "",
+    maxtorque: "",
+    clutch: "",
+    transmissionmodel: "",
+    rearaxle: "",
+    steeringtech: "",
+    milage: "",
+    frame: "",
+    truckstatus: "",
+    price: "",
+    status:"",
   
  });
  setDriver({
@@ -247,10 +283,14 @@ const onSubmit =(types:any) => async (e: any) => {
 }
 //set change for diver
 const adddriver = () => (
-  <div style={{overflow: "auto", height:"600px"}}>
+  <div>
   <form className="form-horizontal" >
+  <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="mb-3">
+  <Tab eventKey="home" title="STEP 1">
   <div className="form-group">
-        <label className="text-mute text-primary-p" style={{color: "#000000"}}>FIRSTNAME:</label>
+    <div className="row">
+      <div className="col">
+      <label className="text-mute text-primary-p" style={{color: "#000000"}}>FIRSTNAME:</label>
           <div className="input-container">
           <i className="fa fa-user icon" aria-hidden="true"></i>
           <input
@@ -262,9 +302,10 @@ const adddriver = () => (
           required
         />
        </div>
-        </div>
-        <div className="form-group">
-        <label className="text-mute text-primary-p" style={{color: "#000000"}}>LASTNAME:</label>
+
+      </div>
+      <div className="col">
+      <label className="text-mute text-primary-p" style={{color: "#000000"}}>LASTNAME:</label>
           <div className="input-container">
           <i className="fa fa-user icon" aria-hidden="true"></i>
           <input
@@ -277,10 +318,17 @@ const adddriver = () => (
         />
        
         </div>
+
+      </div>
+    </div>
+       
         </div>
+       
         
         <div className="form-group">
-        <label className="text-mute text-primary-p" style={{color: "#000000"}}>PHONE NUMBER:</label>
+          <div className="row">
+            <div className="col">
+            <label className="text-mute text-primary-p" style={{color: "#000000"}}>PHONE NUMBER:</label>
           <div className="input-container">
           <i className="fa fa-phone icon"></i>
           <input
@@ -293,9 +341,10 @@ const adddriver = () => (
         />
        
         </div>
-        </div>
-        <div className="form-group">
-        <label className="text-mute text-primary-p" style={{color: "#000000"}}>Enter EMAIl:</label>
+
+            </div>
+            <div className="col">
+            <label className="text-mute text-primary-p" style={{color: "#000000"}}>Enter EMAIL:</label>
           <div className="input-container">
           <i className="fa fa-envelope-o icon"></i>
           <input
@@ -307,10 +356,17 @@ const adddriver = () => (
         />
        
         </div>
+
+            </div>
+          </div>
+       
         </div>
+       
         
         <div className="form-group">
-        <label className="text-mute text-primary-p" style={{color: "#000000"}}>Enter DATE OF BIRTH:</label>
+          <div className="row">
+            <div className="col">
+            <label className="text-mute text-primary-p" style={{color: "#000000"}}>Enter DATE OF BIRTH:</label>
           <div className="input-container">
           <i className="fa fa-birthday-cake icon"></i>
           <input
@@ -321,18 +377,26 @@ const adddriver = () => (
         />
        
         </div>
-        </div>
-        <div className="form-group">
-        <label className="text-mute text-primary-p" style={{color: "#000000"}}>ENTER  ADDRESS:</label>
+
+            </div>
+            <div className="col">
+            <label className="text-mute text-primary-p" style={{color: "#000000"}}>ENTER  ADDRESS:</label>
           <div className="input-container">
           <i className="fa fa-location-arrow icon"></i>
           <textarea value={address} placeholder="ENTER DRIVERS ADDRESS"  onChange={handleDriverChange("address")} className="form-control" id="exampleTextarea" ></textarea>
          
        
         </div>
+
+            </div>
+          </div>
+        
         </div>
+      
         <div className="form-group">
-        <label className="text-mute text-primary-p" style={{color: "#000000"}}>ENTER DRIVER LICENCE NUMBER:</label>
+          <div className="row">
+            <div className="col">
+            <label className="text-mute text-primary-p" style={{color: "#000000"}}>ENTER DRIVER LICENCE NUMBER:</label>
           <div className="input-container">
           <i className="fa fa-id-card-o icon"></i>
           <input
@@ -344,9 +408,10 @@ const adddriver = () => (
         />
        
         </div>
-        </div>
-        <div className="form-group">
-        <label className="text-mute text-primary-p" style={{color: "#000000"}}>YEARS OF EXPERIENCE:</label>
+
+            </div>
+            <div className="col">
+            <label className="text-mute text-primary-p" style={{color: "#000000"}}>YEARS OF EXPERIENCE:</label>
         <div className="input-container">
         <i className="fa fa-book icon"></i>
         
@@ -369,9 +434,21 @@ const adddriver = () => (
                         
                       </select>
                       </div>
+
+            </div>
+          </div>
+      
         </div>
-        <div className="form-group">
-        <label className="text-mute text-primary-p" style={{color: "#000000"}}>ASSIGN TRUCK:</label>
+       
+    </Tab>
+    {//step 2
+
+    }
+    <Tab eventKey="profile" title="STEP 2">
+    <div className="form-group">
+          <div className="row">
+            <div className="col">
+            <label className="text-mute text-primary-p" style={{color: "#000000"}}>ASSIGN TRUCK:</label>
         <div className="input-container">
         <i className="fa fa-book icon"></i>
         
@@ -393,9 +470,10 @@ const adddriver = () => (
                         
                       </select>
                       </div>
-        </div>
-        <div className="form-group">
-        <label className="text-mute text-primary-p" style={{color: "#000000"}}>ENTER NEXT OF KIN NAME:</label>
+
+            </div>
+            <div className="col">
+            <label className="text-mute text-primary-p" style={{color: "#000000"}}>ENTER NEXT OF KIN NAME:</label>
           <div className="input-container">
           <i className="fa fa-user-circle icon"></i>
           <input
@@ -407,19 +485,26 @@ const adddriver = () => (
         />
        
         </div>
+
+            </div>
+          </div>
+       
         </div>
+       
         <div className="form-group">
-        <label className="text-mute text-primary-p" style={{color: "#000000"}}>ENTER NEXT OF KIN ADDRESS:</label>
+          <div className="row">
+            <div className="col">
+            <label className="text-mute text-primary-p" style={{color: "#000000"}}>ENTER NEXT OF KIN ADDRESS:</label>
           <div className="input-container">
           <i className="fa fa-map-marker icon"></i>
           <textarea value={nextofkinaddress} placeholder="ENTER NEXT OF KIN ADDRESS"  onChange={handleDriverChange("nextofkinaddress")} className="form-control" id="exampleTextarea" ></textarea>
          
        
         </div>
-        </div>
-        
-        <div className="form-group">
-        <label className="text-mute text-primary-p" style={{color: "#000000"}}>ENTER GUARANTORS NAME:</label>
+
+            </div>
+            <div className="col">
+            <label className="text-mute text-primary-p" style={{color: "#000000"}}>ENTER GUARANTORS NAME:</label>
           <div className="input-container">
           <i className="fa fa-male icon"></i>
           <input
@@ -430,20 +515,28 @@ const adddriver = () => (
           className="input-field"
         />
        </div>
+
+            </div>
+          </div>
+       
         </div>
         
+       
+        
         <div className="form-group">
-        <label className="text-mute text-primary-p" style={{color: "#000000"}}>ENTER GUARANTORS ADDRESS:</label>
+          <div className="row">
+            <div className="col">
+            <label className="text-mute text-primary-p" style={{color: "#000000"}}>ENTER GUARANTORS ADDRESS:</label>
           <div className="input-container">
           <i className="fa fa-address-card-o icon"></i>
           <textarea value={guarantoraddress} placeholder="ENTER GUARANTORS ADDRESS"  onChange={handleDriverChange("guarantoraddress")} className="form-control" id="exampleTextarea" ></textarea>
          
        
         </div>
-        </div>
-       
-        <div className="form-group">
-        <label className="text-mute text-primary-p" style={{color: "#000000"}}>ENTER GUARANTORS PHONE NUMBER:</label>
+
+            </div>
+            <div className="col">
+            <label className="text-mute text-primary-p" style={{color: "#000000"}}>ENTER GUARANTORS PHONE NUMBER:</label>
           <div className="input-container">
           <i className="fa fa-mobile icon"></i>
           <input
@@ -454,10 +547,18 @@ const adddriver = () => (
           className="input-field"
         />
        </div>
+
+            </div>
+          </div>
+       
         </div>
+       
+       
         
         <div className="form-group">
-        <label className="text-mute text-primary-p" style={{color: "#000000"}}>Upload Drivers Passport:</label>
+          <div className="row">
+            <div className="col">
+            <label className="text-mute text-primary-p" style={{color: "#000000"}}>Upload Drivers Passport:</label>
           <div >
           <i className="fa fa-camera icon"></i>
           <input
@@ -469,9 +570,10 @@ const adddriver = () => (
            
           
         </div>
-        </div>
-        <div className="form-group">
-        <label className="text-mute text-primary-p" style={{color: "#000000"}}>Upload Guarantor Passport:</label>
+
+            </div>
+            <div className="col">
+            <label className="text-mute text-primary-p" style={{color: "#000000"}}>Upload Guarantor Passport:</label>
           <div >
           <i className="fa fa-camera icon"></i>
           <input
@@ -483,9 +585,18 @@ const adddriver = () => (
            
           
         </div>
+
+            </div>
+          </div>
+       
         </div>
+       
         <button onClick={ closeModal} style={{ backgroundColor: '#fe0002'}}  className="btn btn-danger button3">Back</button>
   <button type="submit" onClick={onSubmit("driver")}  style={{backgroundColor: '#008ED3',marginLeft: '10px'}}  className="btn btn-danger button3">Submit</button>
+    </Tab>
+    </Tabs>
+ 
+       
         </form>
        
     
@@ -493,25 +604,32 @@ const adddriver = () => (
 
 );
 const addtruck = () =>(
-  <div style={{overflow: "auto", height:"600px"}}>
+  <div >
+    
 <form className="form-horizontal" >
-<div className="form-group">
-      <label className="text-mute text-primary-p" style={{color: "#000000"}}>Plate Number:</label>
-        <div className="input-container">
+<Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="mb-3">
+  <Tab eventKey="home" title="STEP 1">
+  <div className="form-group">
+     <div className="row">
+       <div className="col">
+       <label className="text-mute text-primary-p" style={{color: "#000000"}}>Year:</label>
+       <div className="input-container">
         <i className="fa fa-subway icon"></i>
         <input
-        onChange={handleChange("platenumber")}
-        value={platenumber}
-        placeholder="Enter Plate Number"
+        onChange={handleChange("year")}
+        value={year}
+        placeholder="Enter Year"
         type="text"
         className="input-field"
         required
       />
+      
      
       </div>
-      </div>
-      <div className="form-group">
-      <label className="text-mute text-primary-p" style={{color: "#000000"}}>Brand:</label>
+
+       </div>
+       <div className="col">
+       <label className="text-mute text-primary-p" style={{color: "#000000"}}>Brand:</label>
                     <select
                     onChange={handleChange("brand")}
                     value={brand}
@@ -526,9 +644,17 @@ const addtruck = () =>(
                        
                       
                     </select>
+
+       </div>
+
+     </div>
+        
       </div>
+     
       <div className="form-group">
-      <label className="text-mute text-primary-p" style={{color: "#000000"}}>Enter Model:</label>
+      <div className="row">
+        <div className="col">
+        <label className="text-mute text-primary-p" style={{color: "#000000"}}>Enter Model:</label>
         <div className="input-container">
         <i className="fa fa-truck icon"></i>
         <input
@@ -541,38 +667,208 @@ const addtruck = () =>(
       />
      
       </div>
-      </div>
-      <div className="form-group">
-      <label className="text-mute text-primary-p" style={{color: "#000000"}}>Price:</label>
+
+        </div>
+        <div className="col">
+        <label className="text-mute text-primary-p" style={{color: "#000000"}}>Tire:</label>
         <div className="input-container">
-        <i className="fa fa-subway icon"></i>
+        <i className="fa fa-truck icon"></i>
         <input
-        onChange={handleChange("price")}
-        value={price}
-        placeholder="Enter Price"
+        onChange={handleChange("tire")}
+        value={tire}
+        placeholder="Enter Tire"
         type="text"
         className="input-field"
         required
       />
      
       </div>
+
+
+        </div>
+        </div>
+      
       </div>
+     
       <div className="form-group">
-      <label className="text-mute text-primary-p" style={{color: "#000000"}}>Enter AXLE:</label>
+        <div className="row">
+          <div className="col">
+          <label className="text-mute text-primary-p" style={{color: "#000000"}}>Color:</label>
+        <div className="input-container">
+        <i className="fa fa-truck icon"></i>
+        <input
+        onChange={handleChange("color")}
+        value={color}
+        placeholder="Enter Color"
+        type="text"
+        className="input-field"
+        required
+      />
+     
+      </div>
+
+          </div>
+          <div className="col">
+          <label className="text-mute text-primary-p" style={{color: "#000000"}}>Wheel Base:</label>
+        <div className="input-container">
+        <i className="fa fa-truck icon"></i>
+        <input
+        onChange={handleChange("wheelbase")}
+        value={wheelbase}
+        placeholder="Enter Wheel Base"
+        type="text"
+        className="input-field"
+        required
+      />
+     
+      </div>
+
+          </div>
+
+        </div>
+     
+      </div>
+     
+      <div className="form-group">
+        <div className="row">
+          <div className="col">
+          <label className="text-mute text-primary-p" style={{color: "#000000"}}>Max Speed:</label>
+        <div className="input-container">
+        <i className="fa fa-truck icon"></i>
+        <input
+        onChange={handleChange("maxspeed")}
+        value={maxspeed}
+        placeholder="Enter Max Speed"
+        type="number"
+        className="input-field"
+        required
+      />
+     
+      </div>
+
+          </div>
+          <div className="col">
+          <label className="text-mute text-primary-p" style={{color: "#000000"}}>Max Torque:</label>
+        <div className="input-container">
+        <i className="fa fa-truck icon"></i>
+        <input
+        onChange={handleChange("maxtorque")}
+        value={maxtorque}
+        placeholder="Enter Max Torque"
+        type="number"
+        className="input-field"
+        required
+      />
+     
+      </div>
+
+          </div>
+        </div>
+    
+      </div>
+     
+  </Tab>
+  {//tab 2
+  }
+  <Tab eventKey="profile" title="STEP 2">
+  
+      
+      <div className="form-group">
+        <div className="row">
+          <div className="col">
+          <label className="text-mute text-primary-p" style={{color: "#000000"}}>Clutch:</label>
+        <div className="input-container">
+        <i className="fa fa-truck icon"></i>
+        <input
+        onChange={handleChange("clutch")}
+        value={clutch}
+        placeholder="Enter Clutch"
+        type="text"
+        className="input-field"
+        required
+      />
+     
+      </div>
+
+          </div>
+          <div className="col">
+          <label className="text-mute text-primary-p" style={{color: "#000000"}}>Frame:</label>
+        <div className="input-container">
+        <i className="fa fa-truck icon"></i>
+        <input
+        onChange={handleChange("frame")}
+        value={frame}
+        placeholder="Enter Frame"
+        type="text"
+        className="input-field"
+        required
+      />
+     
+      </div>
+
+          </div>
+        </div>
+      
+      </div>
+     
+      
+      <div className="form-group">
+        <div className="row">
+          <div className="col">
+          <label className="text-mute text-primary-p" style={{color: "#000000"}}>Transmission Model:</label>
+        <div className="input-container">
+        <i className="fa fa-truck icon"></i>
+        <input
+        onChange={handleChange("transmissionmodel")}
+        value={transmissionmodel}
+        placeholder="Enter Transmission Model"
+        type="text"
+        className="input-field"
+        required
+      />
+     
+      </div>
+
+          </div>
+          <div className="col">
+          <label className="text-mute text-primary-p" style={{color: "#000000"}}>Price:</label>
+        <div className="input-container">
+        <i className="fa fa-subway icon"></i>
+        <input
+        onChange={handleChange("price")}
+        value={price}
+        placeholder="Enter Price"
+        type="number"
+        className="input-field"
+        required
+      />
+     
+      </div>
+
+          </div>
+        </div>
+     
+      </div>
+     
+      <div className="form-group">
+        <div className="row">
+          <div className="col">
+          <label className="text-mute text-primary-p" style={{color: "#000000"}}>Enter AXLE:</label>
         <div className="input-container">
         <i className="fa fa-ship icon"></i>
         <input
-        onChange={handleChange("axle")}
-        value={axle}
-        placeholder="Enter AXLE"
+        onChange={handleChange("rearaxle")}
+        value={rearaxle}
+        placeholder="Enter Rear/axle"
         type="text"
         className="input-field"
       />
      
       </div>
-      </div>
-      <div className="form-group">
-      <label className="text-mute text-primary-p" style={{color: "#000000"}}>Engine Type:</label>
+
+          </div>
+          <div className="col">
+          <label className="text-mute text-primary-p" style={{color: "#000000"}}>Engine Type:</label>
                     <select
                    onChange={handleChange("enginetype")}
                    value={enginetype}
@@ -587,82 +883,149 @@ const addtruck = () =>(
                        
                       
                     </select>
+
+          </div>
+        </div>
+     
       </div>
+     
       <div className="form-group">
-      <label className="text-mute text-primary-p" style={{color: "#000000"}}>Enter Power:</label>
+        <div className="row">
+          <div className="col">
+          <label className="text-mute text-primary-p" style={{color: "#000000"}}>Enter Driving Type:</label>
         <div className="input-container">
         <i className="fa fa-battery-full icon"></i>
         <input
-        onChange={handleChange("power")}
-        value={power}
-        placeholder="Enter Engine Type"
+        onChange={handleChange("drivingtype")}
+        value={drivingtype}
+        placeholder="Enter Driving Type"
         type="text"
         className="input-field"
       />
      
       </div>
+
+          </div>
+          <div className="col">
+          <label className="text-mute text-primary-p" style={{color: "#000000"}}>Enter Body Type:</label>
+        <div className="input-container">
+        <i className="fa fa-battery-full icon"></i>
+        <input
+        onChange={handleChange("bodytype")}
+        value={bodytype}
+        placeholder="Enter Body Type"
+        type="text"
+        className="input-field"
+      />
+     
       </div>
+
+          </div>
+        </div>
+      
+      </div>
+  </Tab>
+    {//tab 3
+  }
+  <Tab eventKey="contact" title="STEP 3">
+     
+      
       <div className="form-group">
-      <label className="text-mute text-primary-p" style={{color: "#000000"}}>Enter Tonnage Capacity:</label>
+        <div className="row">
+          <div className="col">
+          <label className="text-mute text-primary-p" style={{color: "#000000"}}>Enter Tonnage:</label>
         <div className="input-container">
         <i className="fa fa-plug icon"></i>
         <input
-        onChange={handleChange("tonnagecapacity")}
-        value={tonnagecapacity}
-        placeholder="Enter Tonnage Capacity"
+        onChange={handleChange("tonnage")}
+        value={tonnage}
+        placeholder="Enter Tonnage"
         type="text"
         className="input-field"
       />
      
       </div>
+
+          </div>
+          <div className="col">
+          <label className="text-mute text-primary-p" style={{color: "#000000"}}>Enter Milage:</label>
+        <div className="input-container">
+        <i className="fa fa-plug icon"></i>
+        <input
+        onChange={handleChange("milage")}
+        value={milage}
+        placeholder="Enter Milage"
+        type="text"
+        className="input-field"
+      />
+     
       </div>
+
+          </div>
+        </div>
+     
+      </div>
+    
+      
       <div className="form-group">
-      <label className="text-mute text-primary-p" style={{color: "#000000"}}>Enter Specification:</label>
+        <div className="row">
+          <div className="col">
+          <label className="text-mute text-primary-p" style={{color: "#000000"}}>Enter Fuel Tank:</label>
         <div className="input-container">
         <i className="fa fa-car icon"></i>
         <input
-        onChange={handleChange("specification")}
-        value={specification}
-        placeholder="Enter Specification"
+        onChange={handleChange("fueltank")}
+        value={fueltank}
+        placeholder="Enter Fuel Tank"
         type="text"
         className="input-field"
       />
      
       </div>
-      </div>
-      <div className="form-group">
-      <label className="text-mute text-primary-p" style={{color: "#000000"}}>Truck Number:</label>
+
+          </div>
+          <div className="col">
+          <label className="text-mute text-primary-p" style={{color: "#000000"}}>Steering Tech:</label>
         <div className="input-container">
         <i className="fa fa-bus icon"></i>
         <input
-        onChange={handleChange("trucknumber")}
-        value={trucknumber}
-        placeholder="Enter Truck Number"
+        onChange={handleChange("steeringtech")}
+        value={steeringtech}
+        placeholder="Enter Steering Tech"
         type="text"
         className="input-field"
       />
      
       </div>
+
+          </div>
+        </div>
+     
       </div>
+      
+     
+      
       <div className="form-group">
-      <label className="text-mute text-primary-p" style={{color: "#000000"}}>Status:</label>
+        <div className="row">
+          <div className="col">
+          <label className="text-mute text-primary-p" style={{color: "#000000"}}>Status:</label>
                     <select
-                   onChange={handleChange("status")}
-                   value={status}
+                   onChange={handleChange("truckstatus")}
+                   value={truckstatus}
                     className="form-control"
                     required
                     >
                         <option>Please Select</option>
                         <option value="company">Company</option>
-                        <option value="hire">Hire</option>
                         <option value="sale">Sale</option>
                        
                        
                       
                     </select>
-      </div>
-      <div className="form-group">
-      <label className="text-mute text-primary-p" style={{color: "#000000"}}>Upload Picture:</label>
+
+          </div>
+          <div className="col">
+          <label className="text-mute text-primary-p" style={{color: "#000000"}}>Upload Picture:</label>
         <div >
         <i className="fa fa-bus icon"></i>
         <input
@@ -674,10 +1037,24 @@ const addtruck = () =>(
          
         
       </div>
+
+          </div>
+        </div>
+      
       </div>
+      
       <button onClick={ closeModal} style={{ backgroundColor: '#fe0002'}}  className="btn btn-danger button3">Back</button>
 <button type="submit" onClick={onSubmit("truck")}  style={{backgroundColor: '#008ED3',marginLeft: '10px'}}  className="btn btn-danger button3">Submit</button>
+    
+  </Tab>
+</Tabs>
+
+     
+      
+      
+     
       </form>
+
      
   
 </div>

@@ -32,6 +32,7 @@ connectdb();
 
 //routes
 app.use("/truck", require("./routes/trucks"));
+app.use("/dashboard", require("./routes/dashboard"));
 
 //app.use("/auth", require("./routes/auth"));
 

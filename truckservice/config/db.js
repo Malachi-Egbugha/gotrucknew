@@ -17,3 +17,4 @@ const connectDb = async () =>{
 module.exports = connectDb;
 
 //DATABASE=mongodb://mongo_db:27017/trucks
+//mongodb://mongo_db:27017/trucks

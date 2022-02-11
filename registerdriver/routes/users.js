@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {emailverification,passportupload,guarantorpassportupload,updateuser,getallusers,updateothersusers} = require("../controllers/users");
+
 const {protect,apiauthorize} = require("../middleware/auth");
 //mobile
 router.post("/emailverification",emailverification);
