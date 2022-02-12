@@ -74,20 +74,34 @@ let indexOfFirstPost = indexOfLastPost - postsPerpage;
             
             <th scope="col"></th>
             <th scope="col">S/N</th>
-            <th scope="col">Plate Number</th>
+            <th scope="col">Year</th>
             <th scope="col">Brand</th>
             <th scope="col">Model</th>
-            <th scope="col">Axle</th>
+            <th scope="col">RearAxle</th>
             <th scope="col">Engine type</th>
-            <th scope="col">Power</th>
-            <th scope="col">Tonnage Capacity</th>
+            <th scope="col">Driving Type</th>
+            <th scope="col">Body Type</th>
+            <th scope="col">Fuel Tank</th>
+            <th scope="col">Tonnage</th>
+            <th scope="col">tire</th>
+            <th scope="col">color</th>
             <th scope="col">Truck Number</th>
-            <th scope="col">Specification</th>
+            <th scope="col">price</th>
             <th scope="col">Status</th>
             <th>View</th>
             <th scope="col"></th>
            
-            
+       
+ 
+ 
+    
+  
+    
+    
+  
+    
+
+ 
             
             
             
@@ -109,15 +123,19 @@ let indexOfFirstPost = indexOfLastPost - postsPerpage;
               <tr>
               <td></td>
               <td>{i + 1}</td>
-             <td>{u.platenumber}</td>
+             <td>{u.year}</td>
              <td>{u.brand}</td>
              <td>{u.model}</td>
-             <td>{u.axle}</td>
+             <td>{u.rearaxle}</td>
              <td>{u.enginetype}</td>
-             <td>{u.power}</td>
-             <td>{u.tonnagecapacity}</td>
+             <td>{u.drivingtype}</td>
+             <td>{u.bodytype}</td>
+             <td>{u.fueltank}</td>
+             <td>{u.tonnage}</td>
+             <td>{u. tire}</td>
+             <td>{u.color}</td>
              <td>{u.trucknumber}</td>
-             <td>{u.specification}</td>
+             <td>{u.price}</td>
              <td>{u.status}</td>
              <td><i className="fa fa-eye" style={{ backgroundColor: "#4DB151,",padding:"4px",cursor:"pointer" }} onClick={()=>setinfo("pix",u.imageurl)} aria-hidden="true"></i></td>
              </tr>
