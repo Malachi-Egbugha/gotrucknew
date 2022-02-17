@@ -56,8 +56,19 @@ exports.gettruck = async (req,res)=>{
   try {
     const trucks = await Truck.find();
     const totaltrucks = await Truck.countDocuments();
-    res.json({ trucks, totaltrucks,status: true });
+    res.json({ trucks,totaltrucks,status: true });
   } catch (err) {
+    console.log(err);
+    res.json({ msg: "Please Contact Administrator", status: false });
+  }
+
+};
+exports.getlimitedtruck = async (req,res)=>{
+  try {
+    const trucks = await Truck.find().sort({createdAt: -1}).limit(6);
+    res.json({ trucks,status: true });
+  } catch (err) {
+    console.log(err);
     res.json({ msg: "Please Contact Administrator", status: false });
   }
 
@@ -112,15 +123,17 @@ res.json({doc,status: true});
 
 
 exports.ordertruck = async (req,res)=>{
-  const {ids,email} = req.body;
+  const {ids,email,name,phonenumber} = req.body;
   const products = await Truck.find({_id: {$in : ids}});
-  const newOrder = createOrder(products, email);
+  console.log(products);
+  const newOrder = createOrder(products, email,name,phonenumber);
+  console.log(newOrder);
   return res.json(newOrder);  
   
 }
 
 
-function createOrder(products, userEmail){
+function createOrder(products, userEmail,userName,userPhonenumber){
   let total = 0;
   for (let t=0; t<products.length; ++t){
       total += products[t].price;
@@ -128,7 +141,9 @@ function createOrder(products, userEmail){
   }
   const newOrder = new Order({
       products,
-      user: userEmail,
+      email: userEmail,
+      name:userName,
+      phonenumber:userPhonenumber,
       total_price: total
 
   });

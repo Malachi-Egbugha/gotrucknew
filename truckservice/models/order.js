@@ -7,7 +7,9 @@ const OrderSchema = new Schema({
             product_id: String
         }
     ],
-    user: String,
+    name:String,
+    email:String,
+    phonenumber:String,
     total_price: Number,
     created_at:{
         type: Date,
