@@ -108,7 +108,6 @@ exports.updatetaken = async (req,res)=>{
   try{
 //find record by plate number
 const {platenumber} = req.params;
-console.log(platenumber)
 const doc = await Truck.findOneAndUpdate({platenumber},{taken: "1"});
 //adjust taken field to 1
 //return 
@@ -125,9 +124,7 @@ res.json({doc,status: true});
 exports.ordertruck = async (req,res)=>{
   const {ids,email,name,phonenumber} = req.body;
   const products = await Truck.find({_id: {$in : ids}});
-  console.log(products);
   const newOrder = createOrder(products, email,name,phonenumber);
-  console.log(newOrder);
   return res.json(newOrder);  
   
 }

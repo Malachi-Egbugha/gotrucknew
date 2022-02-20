@@ -4,6 +4,8 @@ const Schema = mongoose.Schema;
 const OrderSchema = new Schema({
     products: [
         {
+            type: Schema.Types.ObjectId,
+            ref:'truck',
             product_id: String
         }
     ],

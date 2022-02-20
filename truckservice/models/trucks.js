@@ -38,7 +38,13 @@ const truckSchema = new Schema(
     {timestamps: true}
 
 );
-
+// Duplicate the ID field.
+truckSchema.virtual('id').get(function(){
+    return this._id.toHexString();
+});
+truckSchema.set('toJSON', {
+    virtuals: true
+});
 //create a model
 const Trucks = mongoose.model("truck", truckSchema);
 //export the model
