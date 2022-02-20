@@ -10,7 +10,7 @@ exports.registertruck = async (req,res)=>{
         
         const findTruck = await Truck.countDocuments();
         req.body.trucknumber= findTruck + 1;
-        console.log(req.body);
+        
        
         
     }catch(err){
@@ -123,7 +123,14 @@ res.json({doc,status: true});
 
 exports.ordertruck = async (req,res)=>{
   const {ids,email,name,phonenumber} = req.body;
-  const products = await Truck.find({_id: {$in : ids}});
+  //loop through the ids array
+   let products = [];
+   for (let t=0; t<ids.length; ++t){
+    const product = await Truck.findOne({_id: ids[t]});
+    products.push(product);
+
+}
+  //const products = await Truck.find({_id: {$in : ids}});
   const newOrder = createOrder(products, email,name,phonenumber);
   return res.json(newOrder);  
   
@@ -132,12 +139,14 @@ exports.ordertruck = async (req,res)=>{
 
 function createOrder(products, userEmail,userName,userPhonenumber){
   let total = 0;
+  let productid = [];
   for (let t=0; t<products.length; ++t){
       total += products[t].price;
+      productid.push(products[t]._id);
 
   }
   const newOrder = new Order({
-      products,
+      products:productid,
       email: userEmail,
       name:userName,
       phonenumber:userPhonenumber,
