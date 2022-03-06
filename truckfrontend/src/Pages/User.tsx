@@ -129,8 +129,9 @@ const searchmethod =(event:any) =>{
              <td>change email</td>
              <td>{u.usertype}</td>
              <td>
-             
+             <Moment format="YYYY/MM/DD">
                {u.createdAt}
+               </Moment>
                
                </td>
            

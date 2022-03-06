@@ -108,6 +108,43 @@ const Sidebar = () => {
               
               
 </div>
+  {/**orders */}
+  <div 
+          className={
+            
+            isActive(history, "/orders")
+              ? "sidebar__link active_menu_link"
+              : "sidebar__link"
+          }
+        >
+          <i className="fa fa-shopping-cart" aria-hidden="true"></i>
+          <Link to="/orders" style=
+          {
+            
+            isActive(history, "/orders")
+              ? {color:"#4DB151"}
+             : {}
+          }>Orders</Link>
+        </div>
+        {/**settings */}
+  <div 
+          className={
+            
+            isActive(history, "/settings")
+              ? "sidebar__link active_menu_link"
+              : "sidebar__link"
+          }
+        >
+          <i className="fa fa-cog" aria-hidden="true"></i>
+          <Link to="/settings" style=
+          {
+            
+            isActive(history, "/settings")
+              ? {color:"#4DB151"}
+             : {}
+          }>Settings</Link>
+        </div>
+        
     </div>
   );
 };

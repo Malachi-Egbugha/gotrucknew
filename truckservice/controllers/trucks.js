@@ -7,14 +7,9 @@ const path = require("path");
 exports.registertruck = async (req,res)=>{
     try{
         //register truck
-        
         const findTruck = await Truck.countDocuments();
         req.body.trucknumber= findTruck + 1;
-        
-       
-        
     }catch(err){
-      
         return res.status(500).json({ msg: err, status:false });
     }
         
@@ -103,6 +98,18 @@ return res.json(order);
   //send to order services
   
 };
+exports.updatetruck = async (req,res) =>{
+  try{
+    const {id} = req.params;
+    const doc =  await Truck.findByIdAndUpdate({_id:id}, req.body);
+    res.json({doc,status: true});
+
+  }
+  catch(err){
+    res.json({ msg: "Please Contact Administrator", status: false });
+
+  }
+}
 exports.updatetaken = async (req,res)=>{
   
   try{
@@ -135,18 +142,32 @@ exports.ordertruck = async (req,res)=>{
   return res.json(newOrder);  
   
 }
-
+exports.getorders = async (req,res) =>{
+  //find all in orders
+  
+  try {
+    const orders = await Order.find();
+    const totalorders = await Order.countDocuments();
+    res.json({ orders, totalorders,status: true });
+  } catch (err) {
+    res.json({ msg: "Please Contact Administrator", status: false });
+  }
+   
+  //console.log(products);
+  console.log(orders[0].products);
+  //use id to get truck details
+}
 
 function createOrder(products, userEmail,userName,userPhonenumber){
   let total = 0;
-  let productid = [];
+  //let productid = [];
   for (let t=0; t<products.length; ++t){
       total += products[t].price;
-      productid.push(products[t]._id);
+     // productid.push(products[t]._id );
 
   }
   const newOrder = new Order({
-      products:productid,
+      products,
       email: userEmail,
       name:userName,
       phonenumber:userPhonenumber,

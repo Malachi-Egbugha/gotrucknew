@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import Swal from 'sweetalert2';
 import Modal from "react-modal";
 import {TRUCK,LOCAL} from "../Api/apiconfig";
@@ -6,11 +6,10 @@ import {useQuery,useQueryClient} from 'react-query';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab'
 
-import {postnewtruck,putupdateusers,driversignup,getavailabletruck} from "../Api/apicall";
+import {postnewtruck,putupdateusers,driversignup,getavailabletruck,putupdatetruck,putupdatedriver} from "../Api/apicall";
 import axios from "axios";
 import { type } from "os";
-
-
+import { idText } from "typescript";
 
 type Props = {
     
@@ -20,9 +19,9 @@ type Props = {
     info:any;
   }
   
-const Modalcompoment = ({modalIsOpen,setIsOpen,infotype,info}: Props) =>{
- 
+const Modalcompoment = ({modalIsOpen,setIsOpen,infotype,info}: Props) =>{  
   const [file, setFile] = useState("");
+  const [id, setId] = useState("");
   const [driver, setDriver] = useState({
     firstname: "",
     lastname:"",
@@ -66,6 +65,31 @@ const Modalcompoment = ({modalIsOpen,setIsOpen,infotype,info}: Props) =>{
     truckstatus:"",
  
   });
+  useEffect(()=>{
+    if(infotype === "edittruck")
+  {
+    setId(info._id);
+    delete info._id;
+    delete info.id;
+    setValues({...values,...info,truckstatus:info.status});
+    
+  }
+  else if(infotype === "editdriver"){
+    
+    setId(info._id);
+    delete info._id;
+    delete info.password;
+    delete info.passporturl;
+    delete info.guarantorpassporturl;
+    setDriver({...driver,...info,trunknumber:info.trucknumber});
+
+  }
+
+  },[info])
+  
+  
+
+  
   const {
     year,
     brand,
@@ -93,6 +117,7 @@ const Modalcompoment = ({modalIsOpen,setIsOpen,infotype,info}: Props) =>{
  
 
   } = values;
+
   //destructure driver
   const {
     firstname,
@@ -110,6 +135,7 @@ const Modalcompoment = ({modalIsOpen,setIsOpen,infotype,info}: Props) =>{
     guarantorphone,
     trunknumber,
   } = driver;
+  
   //get available trucks
   const {data,isLoading,isError,error} = useQuery('availabletruck', async() => await getavailabletruck(),{refetchInterval: 50000,refetchOnReconnect:false, refetchIntervalInBackground: true, cacheTime: 100000});
   //HANDLEDRIVER CHANGE
@@ -203,14 +229,18 @@ const closeModal = () =>{
   guarantorpassporturl:"",
   passporturl:"",
   trunknumber:"",
- })
+ });
+ setId("");
   //clear all state
   setIsOpen(false);
 
 }
 const onSubmit =(types:any) => async (e: any) => {
+
   //driversignup
   e.preventDefault();
+ 
+  
   try {
           if(types === "driver")
           {
@@ -229,8 +259,45 @@ const onSubmit =(types:any) => async (e: any) => {
                 footer: '<span>Contact Administrator: 070000000</span>'
               });
               
+          }
+          else if(types === "edittruck"){
+         
+            
+            const putupdatetruckdata:any = await putupdatetruck(id,values);
+            putupdatetruckdata.status ?  Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Success',
+                showConfirmButton: false,
+                timer: 1500
+              }) : Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: `${putupdatetruckdata.msg}`,
+                footer: '<span>Contact Administrator: 070000000</span>'
+              });
+            
           
 
+
+          }
+          else if(types === "editdriver"){
+            console.log(driver);
+            const putupdatedriverdata:any = await putupdatedriver(id,driver);
+            putupdatedriverdata.status ?  Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Success',
+                showConfirmButton: false,
+                timer: 1500
+              }) : Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: `${putupdatedriverdata.msg}`,
+                footer: '<span>Contact Administrator: 070000000</span>'
+              });
+           
+            
           }
           else
           {
@@ -557,6 +624,8 @@ const adddriver = () => (
         
         <div className="form-group">
           <div className="row">
+            {
+              infotype === "editdriver"?<div className="col"></div>:
             <div className="col">
             <label className="text-mute text-primary-p" style={{color: "#000000"}}>Upload Drivers Passport:</label>
           <div >
@@ -572,6 +641,9 @@ const adddriver = () => (
         </div>
 
             </div>
+}
+{
+  infotype === "editdriver"?<div className="col"></div>:
             <div className="col">
             <label className="text-mute text-primary-p" style={{color: "#000000"}}>Upload Guarantor Passport:</label>
           <div >
@@ -587,12 +659,14 @@ const adddriver = () => (
         </div>
 
             </div>
+}
           </div>
        
         </div>
        
         <button onClick={ closeModal} style={{ backgroundColor: '#fe0002'}}  className="btn btn-danger button3">Back</button>
-  <button type="submit" onClick={onSubmit("driver")}  style={{backgroundColor: '#008ED3',marginLeft: '10px'}}  className="btn btn-danger button3">Submit</button>
+  <button type="submit" onClick={onSubmit(infotype === "editdriver"?"editdriver":"driver")}  style={{backgroundColor: '#008ED3',marginLeft: '10px'}}  
+  className="btn btn-danger button3">{infotype === "editdriver"?"Update":"Submit"}</button>
     </Tab>
     </Tabs>
  
@@ -603,7 +677,12 @@ const adddriver = () => (
   </div>
 
 );
-const addtruck = () =>(
+const addtruck = () =>
+{
+  
+    //setValues({...values});
+ 
+return (
   <div >
     
 <form className="form-horizontal" >
@@ -1024,6 +1103,8 @@ const addtruck = () =>(
                     </select>
 
           </div>
+          {
+            infotype === "edittruck"?<div className="col"></div>:
           <div className="col">
           <label className="text-mute text-primary-p" style={{color: "#000000"}}>Upload Picture:</label>
         <div >
@@ -1039,12 +1120,14 @@ const addtruck = () =>(
       </div>
 
           </div>
+}
+
         </div>
       
       </div>
       
       <button onClick={ closeModal} style={{ backgroundColor: '#fe0002'}}  className="btn btn-danger button3">Back</button>
-<button type="submit" onClick={onSubmit("truck")}  style={{backgroundColor: '#008ED3',marginLeft: '10px'}}  className="btn btn-danger button3">Submit</button>
+<button type="submit" onClick={onSubmit(infotype === "edittruck"?"edittruck":"truck")}  style={{backgroundColor: '#008ED3',marginLeft: '10px'}}  className="btn btn-danger button3">{infotype === "edittruck"?"Update":"Submit"}</button>
     
   </Tab>
 </Tabs>
@@ -1059,6 +1142,7 @@ const addtruck = () =>(
   
 </div>
 )
+}
 const pix = () =>(
   
   <div>
@@ -1126,6 +1210,95 @@ const pix = () =>(
           
            
       );
+      const orderdetails = () =>(
+        info.map((u:any,i:any)=>(
+       
+        <div className="row" style={{borderWidth:"1px", borderStyle:"solid"}}>
+          
+        <div className="col-sm-4">
+        
+        <div className="card">
+ <img className="card-img-top" src={`${TRUCK}/uploads/${u.imageurl}`} alt=""/>
+  
+</div>
+        </div>
+        <div className="col-sm-4">
+        <div className="row">
+
+        <div className="col-sm-12">
+        <span  className="text-title" style={{color: "#000",fontSize: "1.2rem"}} ><span className="text-lightblue">TRUCK YEAR: </span> {u.year}</span>
+
+        </div>
+        
+        <div className="col-sm-12">
+        <span  className="text-title" style={{color: "#000",fontSize: "1.2rem"}} ><span className="text-lightblue">TRUCK BRAND: </span> {u.brand}</span>
+
+        </div>
+        
+        <div className="col-sm-12">
+        <span  className="text-title" style={{color: "#000",fontSize: "1.2rem"}}><span className="text-lightblue">TRUCK MODEL: </span> {u.model}</span>
+
+        </div>
+        <div className="col-sm-12">
+        <span  className="text-title" style={{color: "#000",fontSize: "1.2rem"}} ><span className="text-lightblue">TRUCK NUMBER: </span> {u.trucknumber}</span>
+
+        </div>
+        <div className="col-sm-12">
+        <span  className="text-title" style={{color: "#000",fontSize: "1.2rem"}} ><span className="text-lightblue">ENGINE TYPE: </span> {u.enginetype}</span>
+
+        </div>
+        <div className="col-sm-12">
+        <span  className="text-title" style={{color: "#000",fontSize: "1.2rem"}} ><span className="text-lightblue">PRICE: </span> {u.price}</span>
+
+        </div>
+        
+        </div>
+        
+        </div>
+        {
+          //third column
+        }
+        <div className="col-sm-4">
+        <div className="row">
+
+        <div className="col-sm-12">
+        <span  className="text-title" style={{color: "#000",fontSize: "1.2rem"}} ><span className="text-lightblue">BODY TYPE: </span> {u.bodytype}</span>
+
+        </div>
+        
+        <div className="col-sm-12">
+        <span  className="text-title" style={{color: "#000",fontSize: "1.2rem"}} ><span className="text-lightblue">FUEL TANK: </span> {u.fueltank}</span>
+
+        </div>
+        
+        <div className="col-sm-12">
+        <span  className="text-title" style={{color: "#000",fontSize: "1.2rem"}}><span className="text-lightblue">DRIVING TYPE: </span> {u.drivingtype}</span>
+
+        </div>
+        <div className="col-sm-12">
+        <span  className="text-title" style={{color: "#000",fontSize: "1.2rem"}} ><span className="text-lightblue">STEERING TECH: </span> {u.steeringtech}</span>
+
+        </div>
+        <div className="col-sm-12">
+        <span  className="text-title" style={{color: "#000",fontSize: "1.2rem"}} ><span className="text-lightblue">ENGINE TYPE: </span> {u.enginetype}</span>
+
+        </div>
+        <div className="col-sm-12">
+        <span  className="text-title" style={{color: "#000",fontSize: "1.2rem"}} ><span className="text-lightblue">TONNAGE: </span> {u.tonnage}</span>
+
+        </div>
+        
+        
+        </div>
+        
+        </div>
+       
+   
+            </div>
+           
+        
+        ))
+      );
   const addstatusform = () =>(
     
     <form className="form-horizontal" >
@@ -1168,7 +1341,17 @@ const returnfunc = () =>{
     return addtruck();
 
   }
+  else if(infotype === "edittruck"){
+  
+    
+    return addtruck();
+
+  }
   else if(infotype === "newdriver"){
+    return adddriver();
+
+  }
+  else if(infotype === "editdriver"){
     return adddriver();
 
   }
@@ -1178,6 +1361,13 @@ const returnfunc = () =>{
   }
   else if (infotype === "status"){
     return addstatusform ();
+
+  }
+  else if (infotype === "orderdetails"){
+    return <div>
+      {orderdetails ()}
+       <button onClick={ closeModal} style={{ backgroundColor: '#fe0002'}}  className="btn btn-danger button3">Back</button>
+    </div>
 
   }
 }
@@ -1193,9 +1383,10 @@ const returnfunc = () =>{
         style={customStyles}
         contentLabel="Example Modal"
       >
-        
+        <div style={{maxHeight:"80vh"}}>
         
         {returnfunc()}
+        </div>
        
         
         

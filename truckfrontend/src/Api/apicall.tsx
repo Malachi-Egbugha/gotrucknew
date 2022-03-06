@@ -97,7 +97,7 @@ export const getalltrucks = async () => {
     headers.append("Accept", "application/json");
     headers.append("Content-Type", "application/json");
    headers.append("authorization", `Bearer: ${token}`);
-   //console.log('heres');
+  
     
     
       
@@ -301,6 +301,79 @@ export const getavailabletruck = async () => {
    
   };
 
+//update truck
+export const putupdatetruck = async (id: any,data: any) => {
+ 
+  const token = JSON.parse(localStorage.getItem("gotruck") || '{}');
 
+  const headers = new Headers();
+  headers.append("Accept", "application/json");
+  headers.append("Content-Type", "application/json");
+  headers.append("authorization", `Bearer: ${token}`);
 
   
+  try {
+    let truckupdates = await fetch(`${TRUCK}/truck/updatetruck/${id}`, {
+      method: "PUT",
+      headers: headers,
+      body: JSON.stringify(data),
+      
+    });
+    
+    return truckupdates.json();
+  } catch (err) {
+    console.log(">>>>>>",err)
+      return {error: 'Server not Avaialable'}
+  }
+  
+};
+//update driver
+export const putupdatedriver = async (id: any,data: any) => {
+ 
+  const token = JSON.parse(localStorage.getItem("gotruck") || '{}');
+
+  const headers = new Headers();
+  headers.append("Accept", "application/json");
+  headers.append("Content-Type", "application/json");
+  headers.append("authorization", `Bearer: ${token}`);
+
+  
+  try {
+    let driverupdates = await fetch(`${LOCAL}/user/updateothersusers/${id}`, {
+      method: "PUT",
+      headers: headers,
+      body: JSON.stringify(data),
+      
+    });
+    
+    return driverupdates.json();
+  } catch (err) {
+    console.log(">>>>>>",err)
+      return {error: 'Server not Avaialable'}
+  }
+  
+};
+//get all orders
+export const getallorders = async () => {
+  try {
+  
+  const token = JSON.parse(localStorage.getItem("gotruck") || '{}');
+    const headers = new Headers();
+    headers.append("Accept", "application/json");
+    headers.append("Content-Type", "application/json");
+    headers.append("authorization", `Bearer: ${token}`);
+   //console.log('heres');
+    
+    
+      
+      let fetchorders = await fetch(`${TRUCK}/truck/getorders`, {
+        method: "GET",
+        headers: headers,
+        
+      });
+      return fetchorders.json();
+    } catch (err) {
+      console.log(err);
+    }
+   
+  };

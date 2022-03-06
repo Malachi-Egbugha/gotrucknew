@@ -111,7 +111,8 @@ exports.updateothersusers =  async (req,res)=>{
 
   }
   catch(err){
-    res.json({ status: false});
+    console.log(err);
+    res.json({msg: "Please Contact Administrator", status: false});
 
   }
  

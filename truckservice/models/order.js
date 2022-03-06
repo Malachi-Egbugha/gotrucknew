@@ -9,6 +9,11 @@ const OrderSchema = new Schema({
     email:String,
     phonenumber:String,
     total_price: Number,
+    status:{
+        type: String,
+        default:"pending"
+
+    },
     created_at:{
         type: Date,
         default: Date.now(),

@@ -17,7 +17,8 @@ const Truck = () => {
   const [searchitem, setSearchitem] = useState<string>('');
   const [info, setInfo] = useState<any>();
   const [postsPerpage] = useState<number>(100);
-  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [currentPage, setCurrentPage] = useState<number>(1);
+ 
    //set index of first and lastpage
 const indexOfLastPost = currentPage * postsPerpage;
 let indexOfFirstPost = indexOfLastPost - postsPerpage;
@@ -36,6 +37,7 @@ let indexOfFirstPost = indexOfLastPost - postsPerpage;
     //setInfo("");
     setCurrentPage(pageNumber);
   };
+  
   
    //load default state
  const {data,isLoading,isError} = useQuery('trucks', async() => await await getalltrucks(),{refetchInterval: 50000,refetchOnReconnect:false, refetchIntervalInBackground: true, cacheTime: 100000});
@@ -89,22 +91,9 @@ let indexOfFirstPost = indexOfLastPost - postsPerpage;
             <th scope="col">price</th>
             <th scope="col">Status</th>
             <th>View</th>
+            <th>Edit</th>
             <th scope="col"></th>
            
-       
- 
- 
-    
-  
-    
-    
-  
-    
-
- 
-            
-            
-            
           </tr>
         </thead>
         <tbody>
@@ -138,6 +127,7 @@ let indexOfFirstPost = indexOfLastPost - postsPerpage;
              <td>{u.price}</td>
              <td>{u.status}</td>
              <td><i className="fa fa-eye" style={{ backgroundColor: "#4DB151,",padding:"4px",cursor:"pointer" }} onClick={()=>setinfo("pix",u.imageurl)} aria-hidden="true"></i></td>
+             <td><i className="fa fa-pencil-square-o" style={{ backgroundColor: "#4DB151,",padding:"4px",cursor:"pointer" }} onClick={()=>setinfo('edittruck',u)} aria-hidden="true"></i></td>
              </tr>
 
             ))

@@ -17,7 +17,7 @@ const Driver = () => {
   const [infotype, setInfotype] = useState("");
   const [info, setInfo] = useState<any>();
   const [postsPerpage] = useState<number>(100);
-  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [currentPage, setCurrentPage] = useState<number>(1);
    //set index of first and lastpage
 const indexOfLastPost = currentPage * postsPerpage;
 let indexOfFirstPost = indexOfLastPost - postsPerpage;
@@ -85,6 +85,7 @@ const  setIsOpen =  (status:any) =>{
             <th scope="col">More Details</th>
             <th scope="col">Change Status</th>
             <th scope="col">Passport</th>
+            <th scope="col">Edit</th>
            
             
             
@@ -122,6 +123,8 @@ const  setIsOpen =  (status:any) =>{
              <td><i className=" fa fa-info-circle" style={{ backgroundColor: "#4DB151,",padding:"4px",cursor:"pointer" }} onClick={()=>setinfo("details",{firstname:u.firstname,lastname:u.lastname,phone:u.phone,email:u.email,address:u.address,usertype:u.usertype,dob:u.dob,driverlicencenumber:u.driverlicencenumber,yearsofexperience:u.yearsofexperience,status:u.status,trucknumber:u.trucknumber,nextofkinname:u.nextofkinname,nextofkinaddress:u.nextofkinaddress, guarantorname:u.guarantorname,guarantoraddress: u.guarantoraddress,guarantorphone:u.guarantorphone,guarantorpassporturl:u.guarantorpassporturl,trunknumber:u.trunknumber,meansofidentity:u.meansofidentity })} aria-hidden="true"></i></td>
              <td><i className="fa fa-user-circle-o" style={{ backgroundColor: "#4DB151,",padding:"4px",cursor:"pointer" }} onClick={()=>setinfo("status",u._id)} aria-hidden="true"></i></td>
              <td><i className="fa fa-eye" style={{ backgroundColor: "#4DB151,",padding:"4px",cursor:"pointer" }} onClick={()=>setinfo("driverpix",u.passporturl)} aria-hidden="true"></i></td>
+             <td><i className="fa fa-pencil-square-o" style={{ backgroundColor: "#4DB151,",padding:"4px",cursor:"pointer" }} onClick={()=>setinfo('editdriver',u)} aria-hidden="true"></i></td>
+             
              </tr>
 
             ))
