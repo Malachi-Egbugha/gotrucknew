@@ -9,7 +9,6 @@ router.post("/registertruck",protect,registertruck);
 router.get("/gettruck",protect,gettruck);
 router.get("/getorders",getorders);
 router.get("/getavailabletruck",protect,getavailabletruck);
-
 router.post("/updatetaken/:platenumber",protect,updatetaken);
 router.put("/updatetruck/:id",protect,updatetruck);
 //mobile

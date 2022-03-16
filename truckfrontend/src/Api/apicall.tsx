@@ -377,3 +377,54 @@ export const getallorders = async () => {
     }
    
   };
+
+  //post truck settings
+export const posttrucksetting = async (data: any) => {
+ 
+  const token = JSON.parse(localStorage.getItem("gotruck") || '{}');
+
+  const headers = new Headers();
+  headers.append("Accept", "application/json");
+  headers.append("Content-Type", "application/json");
+  headers.append("authorization", `Bearer: ${token}`);
+
+  
+  try {
+    let trucksettings = await fetch(`${TRUCK}/trucksetting/setsettings`, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(data),
+      
+    });
+    
+    return trucksettings.json();
+  } catch (err) {
+    console.log(">>>>>>",err)
+      return {status:false,error: 'Server not Avaialable'}
+  }
+  
+};
+//get settings
+export const gettrucksetting = async (type:any) => {
+  try {
+  
+  const token = JSON.parse(localStorage.getItem("gotruck") || '{}');
+    const headers = new Headers();
+    headers.append("Accept", "application/json");
+    headers.append("Content-Type", "application/json");
+    headers.append("authorization", `Bearer: ${token}`);
+   //console.log('heres');
+    
+    
+      
+      let fetchsettings = await fetch(`${TRUCK}/trucksetting/getsettings/${type}`, {
+        method: "GET",
+        headers: headers,
+        
+      });
+      return fetchsettings.json();
+    } catch (err) {
+      console.log(err);
+    }
+   
+  };

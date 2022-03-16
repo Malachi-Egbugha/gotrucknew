@@ -7,9 +7,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab'
 
 import {postnewtruck,putupdateusers,driversignup,getavailabletruck,putupdatetruck,putupdatedriver} from "../Api/apicall";
-import axios from "axios";
-import { type } from "os";
-import { idText } from "typescript";
+import {gettrucksetting} from "../Api/apicall";
 
 type Props = {
     
@@ -65,6 +63,22 @@ const Modalcompoment = ({modalIsOpen,setIsOpen,infotype,info}: Props) =>{
     truckstatus:"",
  
   });
+  const [settings,setSettings] = useState<any>({
+    modelset:[],
+    yearset:[],
+    brandset:[],
+    enginetypeset:[]
+
+  })
+  const getsettings = async () =>{
+    let modelsetting =(await gettrucksetting('model')).setsettings;
+    let brandsetting =(await gettrucksetting('brand')).setsettings;
+    let yearsetting =(await gettrucksetting('year')).setsettings;
+    let enginetypesetting =(await gettrucksetting('enginetype')).setsettings;
+    setSettings({modelset:[...modelsetting],yearset:[...yearsetting],brandset:[...brandsetting],enginetypeset:[...enginetypesetting]});
+    
+
+  }
   useEffect(()=>{
     if(infotype === "edittruck")
   {
@@ -84,9 +98,12 @@ const Modalcompoment = ({modalIsOpen,setIsOpen,infotype,info}: Props) =>{
     setDriver({...driver,...info,trunknumber:info.trucknumber});
 
   }
+  getsettings();
 
-  },[info])
-  
+  },[info]);
+  //destructure settings
+  const {modelset,yearset,brandset,enginetypeset} = settings;
+ 
   
 
   
@@ -694,14 +711,24 @@ return (
        <label className="text-mute text-primary-p" style={{color: "#000000"}}>Year:</label>
        <div className="input-container">
         <i className="fa fa-subway icon"></i>
-        <input
-        onChange={handleChange("year")}
-        value={year}
-        placeholder="Enter Year"
-        type="text"
-        className="input-field"
-        required
-      />
+        <select
+                    onChange={handleChange("year")}
+                    value={year}
+                    className="form-control"
+                    required
+                    >
+                        <option>Please Select</option>
+                       {
+                         yearset.map((u:any,i:any)=>(
+                           <option value={u.name}>{u.name}</option>
+
+                         ))
+
+                       }
+                       
+                       
+                      
+                    </select>
       
      
       </div>
@@ -716,9 +743,13 @@ return (
                     required
                     >
                         <option>Please Select</option>
-                        <option value="benz">BENZ</option>
-                        <option value="toyota">TOYOTA</option>
-                        <option value="honda">HONDA</option>
+                        {
+                         brandset.map((u:any,i:any)=>(
+                           <option value={u.name}>{u.name}</option>
+
+                         ))
+
+                       }
                        
                        
                       
@@ -736,14 +767,24 @@ return (
         <label className="text-mute text-primary-p" style={{color: "#000000"}}>Enter Model:</label>
         <div className="input-container">
         <i className="fa fa-truck icon"></i>
-        <input
-        onChange={handleChange("model")}
-        value={model}
-        placeholder="Enter Model"
-        type="text"
-        className="input-field"
-        required
-      />
+        <select
+                    onChange={handleChange("model")}
+                    value={model}
+                    className="form-control"
+                    required
+                    >
+                        <option>Please Select</option>
+                        {
+                         modelset.map((u:any,i:any)=>(
+                           <option value={u.name}>{u.name}</option>
+
+                         ))
+
+                       }
+                       
+                       
+                      
+                    </select>
      
       </div>
 
@@ -779,7 +820,7 @@ return (
         onChange={handleChange("color")}
         value={color}
         placeholder="Enter Color"
-        type="text"
+        type="color"
         className="input-field"
         required
       />
@@ -955,9 +996,15 @@ return (
                     required
                     >
                         <option>Please Select</option>
-                        <option value="v6">V6</option>
-                        <option value="v7">V7</option>
-                        <option value="v8">V8</option>
+                        {
+     enginetypeset.map((u:any,i:any)=>(
+       <option value={u.name}>{u.name}</option>
+
+     ))
+
+   }
+   
+                       
                        
                        
                       

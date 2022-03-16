@@ -499,3 +499,7 @@
   background-color: #fe0002
 
   }
+  .divisionborder{
+    border-right-width: '3px'!important; border-right-style:'solid' !important;
+
+  }
