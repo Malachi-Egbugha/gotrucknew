@@ -428,3 +428,33 @@ export const gettrucksetting = async (type:any) => {
     }
    
   };
+
+  //update truck image
+  export const replacetruckimage = async (id:any,file:any) =>{
+    const token = JSON.parse(localStorage.getItem("gotruck") || '{}');
+    let data = new FormData();
+    data.append('file', file);
+    var config:any = {
+      method: 'put',
+      url: `${TRUCK}/truck/updatetruck/${id}/truckimage`,
+      headers: { 
+       
+        "Content-Type": "multipart/form-data",
+        'authorization': `Bearer: ${token} `, 
+        
+      },
+      data : data
+    };
+    
+    try {
+      let puttruckimage = await axios(config);
+      console.log(puttruckimage.data);
+      return puttruckimage.data;
+    } catch (err) {
+      console.log(err);
+    }
+    
+    
+      
+    
+    };

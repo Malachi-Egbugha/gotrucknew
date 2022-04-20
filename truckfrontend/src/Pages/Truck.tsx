@@ -92,6 +92,7 @@ let indexOfFirstPost = indexOfLastPost - postsPerpage;
             <th scope="col">Status</th>
             <th>View</th>
             <th>Edit</th>
+            <th>Replace Image</th>
             <th scope="col"></th>
            
           </tr>
@@ -124,10 +125,11 @@ let indexOfFirstPost = indexOfLastPost - postsPerpage;
              <td>{u. tire}</td>
              <td>{u.color}</td>
              <td>{u.trucknumber}</td>
-             <td>{u.price.toLocaleString()}</td>
+             <td>{u.price && u.price.toLocaleString()}</td>
              <td>{u.status}</td>
              <td><i className="fa fa-eye" style={{ backgroundColor: "#4DB151,",padding:"4px",cursor:"pointer" }} onClick={()=>setinfo("pix",u.imageurl)} aria-hidden="true"></i></td>
              <td><i className="fa fa-pencil-square-o" style={{ backgroundColor: "#4DB151,",padding:"4px",cursor:"pointer" }} onClick={()=>setinfo('edittruck',u)} aria-hidden="true"></i></td>
+             <td><i className="fa fa-pencil-square-o" style={{ backgroundColor: "#4DB151,",padding:"4px",cursor:"pointer" }} onClick={()=>setinfo('edittruckimage',u._id)} aria-hidden="true"></i></td>
              </tr>
 
             ))

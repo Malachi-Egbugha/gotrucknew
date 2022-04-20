@@ -5,12 +5,8 @@ const axios =  require('axios');
 const fileUpload = require("express-fileupload");
 //const morgan = require("morgan");
 const mongoose = require("mongoose");
-
-
 const connectdb = require("./config/db");
-
-
-
+require("dotenv").config();
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -20,7 +16,6 @@ app.use(fileUpload({
     createParentPath: true,
 }));
 app.use('/uploads', express.static('uploads'));
-require("dotenv").config();
 mongoose.Promise = global.Promise;
 connectdb();
 

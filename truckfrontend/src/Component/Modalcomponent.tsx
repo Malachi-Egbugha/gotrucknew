@@ -6,7 +6,7 @@ import {useQuery,useQueryClient} from 'react-query';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab'
 
-import {postnewtruck,putupdateusers,driversignup,getavailabletruck,putupdatetruck,putupdatedriver} from "../Api/apicall";
+import {postnewtruck,putupdateusers,driversignup,getavailabletruck,putupdatetruck,putupdatedriver,replacetruckimage} from "../Api/apicall";
 import {gettrucksetting} from "../Api/apicall";
 
 type Props = {
@@ -76,8 +76,6 @@ const Modalcompoment = ({modalIsOpen,setIsOpen,infotype,info}: Props) =>{
     let yearsetting =(await gettrucksetting('year')).setsettings;
     let enginetypesetting =(await gettrucksetting('enginetype')).setsettings;
     setSettings({modelset:[...modelsetting],yearset:[...yearsetting],brandset:[...brandsetting],enginetypeset:[...enginetypesetting]});
-    
-
   }
   useEffect(()=>{
     if(infotype === "edittruck")
@@ -88,6 +86,10 @@ const Modalcompoment = ({modalIsOpen,setIsOpen,infotype,info}: Props) =>{
     setValues({...values,...info,truckstatus:info.status});
     
   }
+  else if(infotype === "edittruckimage"){
+    setId(info);
+
+  }
   else if(infotype === "editdriver"){
     
     setId(info._id);
@@ -96,17 +98,12 @@ const Modalcompoment = ({modalIsOpen,setIsOpen,infotype,info}: Props) =>{
     delete info.passporturl;
     delete info.guarantorpassporturl;
     setDriver({...driver,...info,trunknumber:info.trucknumber});
-
   }
   getsettings();
 
   },[info]);
   //destructure settings
   const {modelset,yearset,brandset,enginetypeset} = settings;
- 
-  
-
-  
   const {
     year,
     brand,
@@ -130,9 +127,6 @@ const Modalcompoment = ({modalIsOpen,setIsOpen,infotype,info}: Props) =>{
     price,
     status,
     truckstatus,
-    
- 
-
   } = values;
 
   //destructure driver
@@ -299,7 +293,6 @@ const onSubmit =(types:any) => async (e: any) => {
 
           }
           else if(types === "editdriver"){
-            console.log(driver);
             const putupdatedriverdata:any = await putupdatedriver(id,driver);
             putupdatedriverdata.status ?  Swal.fire({
                 position: 'center',
@@ -315,6 +308,22 @@ const onSubmit =(types:any) => async (e: any) => {
               });
            
             
+          }
+          else if(types === "edittruckimage"){
+            const replacetruckimagedata:any = await replacetruckimage(id,file);
+            replacetruckimagedata.status ?  Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Success',
+                showConfirmButton: false,
+                timer: 1500
+              }) : Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: `${replacetruckimagedata.msg}`,
+                footer: '<span>Contact Administrator: 070000000</span>'
+              });
+
           }
           else
           {
@@ -1374,7 +1383,33 @@ const pix = () =>(
     </form>
 
   )
-  
+  const edittruckimage = () =>(
+    <form className="form-horizontal" >
+     
+    <div className="form-group">
+    <div className="row">
+    <div className="col">
+          <label className="text-mute text-primary-p" style={{color: "#000000"}}>Replace Truck Image:</label>
+        <div >
+        <i className="fa fa-bus icon"></i>
+        <input
+            onChange={onFileChange("file")}
+            type="file"
+            placeholder="Enter Truck Number"
+            id="customFile"
+          />
+         
+        
+      </div>
+</div>
+          </div>
+  </div>
+
+  <button onClick={ closeModal} style={{ backgroundColor: '#fe0002'}}  className="btn btn-danger button3">Back</button>
+<button type="submit" onClick={onSubmit("edittruckimage")}  style={{backgroundColor: '#008ED3',marginLeft: '10px'}}  className="btn btn-danger button3">Update</button>
+
+</form>
+  )
 
 const returnfunc = () =>{
   if(infotype === "pix"){
@@ -1417,7 +1452,11 @@ const returnfunc = () =>{
     </div>
 
   }
+  else if(infotype === "edittruckimage"){
+    return edittruckimage();
+  }
 }
+
   
    
     Modal.setAppElement("#root");

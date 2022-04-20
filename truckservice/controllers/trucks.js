@@ -1,6 +1,8 @@
 const Truck = require("../models/trucks");
 const Order = require("../models/order");
 const {v4 : uuidv4} = require('uuid');
+const {savepix} = require("../services");
+const fs = require("fs");
 //const {amqpconnect} = require("../services");
 const path = require("path");
 //amqpconnect();
@@ -12,28 +14,10 @@ exports.registertruck = async (req,res)=>{
     }catch(err){
         return res.status(500).json({ msg: err, status:false });
     }
-        
-   
-      const file = req.files.file;
-      const fileName = file.name;//get file name
-      const renamedurl = uuidv4() + file.name; // define unique passport url
-      const size = file.data.length/1024;// define size of image
-      const extension = path.extname(fileName); //  get file extion
-      let allowedextension = ['.jpg','.png','.jpeg'];// define allowed fine extension
-      //if file extension not allowed return error
-      if(!allowedextension.includes(extension))
-      {
-        return res.status(500).json({ msg: "File extension not allowed", status:false });
-
-      }
-      //check for size (is mut br less than or equal to 240 kilobyte)
-      if(size > 240){
-        return res.status(500).json({ msg: "File size greater than required", status:false });
-      }
-    //add image url to req.body
-      req.body.imageurl = renamedurl;
-      //update image url with renamedurl
-      let uploadfile = await file.mv(`${process.cwd()}/uploads/${renamedurl}`);
+  let uploadfile = await savepix(req,res);
+  if(uploadfile === "error"){
+    return;
+  }
 
      try{
         const truck = new Truck(req.body);
@@ -76,7 +60,6 @@ exports.getavailabletruck = async (req,res)=>{
   } catch (err) {
     res.json({ msg: "Please Contact Administrator", status: false });
   }
-
 };
 exports.buytruck = async (req,res)=>{
   const {ids} = req.body;
@@ -100,8 +83,17 @@ return res.json(order);
 };
 exports.updatetruck = async (req,res) =>{
   try{
-    const {id} = req.params;
+    const {id,truckparam} = req.params;
+    if(truckparam == "truckimage")
+    {
+      let uploadfile = await savepix(req,res);
+      if(uploadfile === "error"){
+        return;
+      }
+      
+    }
     const doc =  await Truck.findByIdAndUpdate({_id:id}, req.body);
+    truckparam == "truckimage"? fs.unlinkSync(`${process.cwd()}/uploads/${doc.imageurl}`):"";
     res.json({doc,status: true});
 
   }
@@ -152,10 +144,6 @@ exports.getorders = async (req,res) =>{
   } catch (err) {
     res.json({ msg: "Please Contact Administrator", status: false });
   }
-   
-  //console.log(products);
-  console.log(orders[0].products);
-  //use id to get truck details
 }
 
 function createOrder(products, userEmail,userName,userPhonenumber){

@@ -10,7 +10,7 @@ router.get("/gettruck",protect,gettruck);
 router.get("/getorders",getorders);
 router.get("/getavailabletruck",protect,getavailabletruck);
 router.post("/updatetaken/:platenumber",protect,updatetaken);
-router.put("/updatetruck/:id",protect,updatetruck);
+router.put("/updatetruck/:id/:truckparam?",updatetruck);
 //mobile
 router.post("/mobilebuy",ordertruck);
 router.get("/mobilegettruck",apiauthorize,gettruck);
